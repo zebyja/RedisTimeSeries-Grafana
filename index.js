@@ -10,8 +10,13 @@ var app = express();
 // The program connects to Redis using the default port 6379
 // To connect to another port, say 8000, run the node app as
 // node index.js 8000
-var redisPort = process.argv[2] || 6379;
-var redisClient = redis.createClient(redisPort);
+var arg = process.argv[2]
+if (arg.startsWith("redis://")){
+  var redisClient = redis.createClient(arg);
+}else{
+  var redisPort = arg || 6379;
+  var redisClient = redis.createClient(redisPort);
+}
 
 // Scan 1000 keys at a time
 var SCAN_START = 0;
